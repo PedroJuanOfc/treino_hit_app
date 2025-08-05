@@ -54,7 +54,7 @@ class _HomeScreenState extends State<HomeScreen> {
                 child: const Text('Iniciar treino'),
               ),
             ),
-          Expanded(
+                    Expanded(
             child: _exercises.isEmpty
                 ? const Center(
                     child: Text(
@@ -62,47 +62,64 @@ class _HomeScreenState extends State<HomeScreen> {
                       style: TextStyle(fontSize: 16),
                     ),
                   )
-                : ListView.builder(
-                    itemCount: _exercises.length,
-                    itemBuilder: (context, index) {
-                      final ex = _exercises[index];
-                      return Dismissible(
-                        key: UniqueKey(),
-                        direction: DismissDirection.endToStart,
-                        background: Container(
-                          color: Colors.red,
-                          alignment: Alignment.centerRight,
-                          padding: const EdgeInsets.symmetric(horizontal: 20),
-                          child: const Row(
-                            mainAxisAlignment: MainAxisAlignment.end,
-                            children: [
-                              Icon(Icons.delete, color: Colors.white),
-                              SizedBox(width: 8),
-                              Text(
-                                'Excluir',
-                                style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
+                : Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      const Padding(
+                        padding: EdgeInsets.symmetric(horizontal: 16.0, vertical: 8),
+                        child: Text(
+                          'Dica: deslize para ⬅️ para excluir um exercício',
+                          style: TextStyle(fontSize: 14, color: Colors.grey),
+                        ),
+                      ),
+                      Expanded(
+                        child: ListView.builder(
+                          itemCount: _exercises.length,
+                          itemBuilder: (context, index) {
+                            final ex = _exercises[index];
+                            return Dismissible(
+                              key: UniqueKey(),
+                              direction: DismissDirection.endToStart,
+                              background: Container(
+                                color: Colors.red,
+                                alignment: Alignment.centerRight,
+                                padding: const EdgeInsets.symmetric(horizontal: 20),
+                                child: const Row(
+                                  mainAxisAlignment: MainAxisAlignment.end,
+                                  children: [
+                                    Icon(Icons.delete, color: Colors.white),
+                                    SizedBox(width: 8),
+                                    Text(
+                                      'Excluir',
+                                      style: TextStyle(
+                                        color: Colors.white,
+                                        fontWeight: FontWeight.bold,
+                                      ),
+                                    ),
+                                  ],
+                                ),
                               ),
-                            ],
-                          ),
-                        ),
-                        onDismissed: (_) {
-                          setState(() {
-                            _exercises.removeAt(index);
-                          });
+                              onDismissed: (_) {
+                                setState(() {
+                                  _exercises.removeAt(index);
+                                });
 
-                          ScaffoldMessenger.of(context).showSnackBar(
-                            const SnackBar(content: Text('Exercício removido')),
-                          );
-                        },
-                        child: ListTile(
-                          title: Text(ex.name),
-                          subtitle: Text(
-                            'Duração: ${ex.durationSeconds}s | Descanso: ${ex.restSeconds}s',
-                          ),
-                          trailing: const Icon(Icons.delete), // 👈 opcional pra sugerir ação
+                                ScaffoldMessenger.of(context).showSnackBar(
+                                  const SnackBar(content: Text('Exercício removido')),
+                                );
+                              },
+                              child: ListTile(
+                                title: Text(ex.name),
+                                subtitle: Text(
+                                  'Duração: ${ex.durationSeconds}s | Descanso: ${ex.restSeconds}s',
+                                ),
+                                trailing: const Icon(Icons.delete),
+                              ),
+                            );
+                          },
                         ),
-                      );
-                    },
+                      ),
+                    ],
                   ),
           ),
         ],
