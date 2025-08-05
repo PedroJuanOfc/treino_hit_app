@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'add_exercise_screen.dart'; // 👈 importa aqui
 
 class HomeScreen extends StatelessWidget {
   const HomeScreen({super.key});
@@ -18,7 +19,12 @@ class HomeScreen extends StatelessWidget {
       ),
       floatingActionButton: FloatingActionButton(
         onPressed: () {
-          // Futura tela de adicionar exercício
+          Navigator.push(
+            context,
+            MaterialPageRoute(
+              builder: (context) => const AddExerciseScreen(),
+            ),
+          );
         },
         child: const Icon(Icons.add),
       ),
