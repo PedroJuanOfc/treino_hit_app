@@ -1,7 +1,17 @@
+import 'package:hive/hive.dart';
+
+part 'exercise.g.dart';
+
+@HiveType(typeId: 0)
 class Exercise {
-  final String name;
-  final int durationSeconds;
-  final int restSeconds;
+  @HiveField(0)
+  String name;
+
+  @HiveField(1)
+  int durationSeconds;
+
+  @HiveField(2)
+  int restSeconds;
 
   Exercise({
     required this.name,
