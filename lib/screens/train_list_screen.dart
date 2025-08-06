@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:treino_hit_app/screens/train_detail_screen.dart';
 import '../models/train.dart';
 
 class TrainListScreen extends StatefulWidget {
@@ -55,7 +56,12 @@ class _TrainListScreenState extends State<TrainListScreen> {
                   title: Text(train.name),
                   subtitle: Text('${train.exercises.length} exercício(s)'),
                   onTap: () {
-                    //Futuro
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => TrainDetailScreen(train: train),
+                      ),
+                    );
                   },
                 );
               },
