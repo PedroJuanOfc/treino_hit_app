@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import '../models/train.dart';
 import '../models/exercise.dart';
 import 'add_exercise_screen.dart';
+import 'workout_screen.dart';
 
 class TrainDetailScreen extends StatefulWidget {
   final Train train;
@@ -13,6 +14,14 @@ class TrainDetailScreen extends StatefulWidget {
 }
 
 class _TrainDetailScreenState extends State<TrainDetailScreen> {
+  late List<Exercise> _exercises;
+
+  @override
+  void initState() {
+    super.initState();
+    _exercises = List.from(widget.train.exercises); // cópia local
+  }
+
   void _addExercise() async {
     final result = await Navigator.push<Exercise>(
       context,
@@ -21,29 +30,51 @@ class _TrainDetailScreenState extends State<TrainDetailScreen> {
 
     if (result != null) {
       setState(() {
-        widget.train.exercises.add(result);
+        _exercises.add(result);
+        widget.train.exercises.add(
+          result,
+        ); // mantém o treino original atualizado
       });
     }
   }
 
   void _removeExercise(int index) {
     setState(() {
-      widget.train.exercises.removeAt(index);
+      widget.train.exercises.removeAt(
+        index,
+      ); // mantém o treino original atualizado
+      _exercises.removeAt(index);
     });
+  }
+
+  void _startWorkout() {
+    if (_exercises.isEmpty) return;
+
+    Navigator.push(
+      context,
+      MaterialPageRoute(builder: (_) => WorkoutScreen(exercises: _exercises)),
+    );
   }
 
   @override
   Widget build(BuildContext context) {
-    final exercises = widget.train.exercises;
-
     return Scaffold(
-      appBar: AppBar(title: Text(widget.train.name)),
-      body: exercises.isEmpty
+      appBar: AppBar(
+        title: Text(widget.train.name),
+        actions: [
+          IconButton(
+            onPressed: _startWorkout,
+            icon: const Icon(Icons.play_arrow),
+            tooltip: 'Iniciar treino',
+          ),
+        ],
+      ),
+      body: _exercises.isEmpty
           ? const Center(child: Text('Nenhum exercício adicionado ainda'))
           : ListView.builder(
-              itemCount: exercises.length,
+              itemCount: _exercises.length,
               itemBuilder: (context, index) {
-                final ex = exercises[index];
+                final ex = _exercises[index];
                 return Dismissible(
                   key: UniqueKey(),
                   direction: DismissDirection.endToStart,
