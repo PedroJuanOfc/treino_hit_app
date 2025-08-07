@@ -4,7 +4,7 @@ import 'exercise.dart';
 part 'train.g.dart';
 
 @HiveType(typeId: 1)
-class Train {
+class Train extends HiveObject {
   @HiveField(0)
   String name;
 

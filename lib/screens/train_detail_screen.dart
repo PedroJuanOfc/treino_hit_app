@@ -19,7 +19,7 @@ class _TrainDetailScreenState extends State<TrainDetailScreen> {
   @override
   void initState() {
     super.initState();
-    _exercises = List.from(widget.train.exercises); // cópia local
+    _exercises = List.from(widget.train.exercises);
   }
 
   void _addExercise() async {
@@ -31,19 +31,17 @@ class _TrainDetailScreenState extends State<TrainDetailScreen> {
     if (result != null) {
       setState(() {
         _exercises.add(result);
-        widget.train.exercises.add(
-          result,
-        ); // mantém o treino original atualizado
+        widget.train.exercises.add(result);
+        widget.train.save();
       });
     }
   }
 
   void _removeExercise(int index) {
     setState(() {
-      widget.train.exercises.removeAt(
-        index,
-      ); // mantém o treino original atualizado
+      widget.train.exercises.removeAt(index);
       _exercises.removeAt(index);
+      widget.train.save();
     });
   }
 
