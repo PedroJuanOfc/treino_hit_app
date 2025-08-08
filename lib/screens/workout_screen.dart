@@ -63,11 +63,14 @@ class _WorkoutScreenState extends State<WorkoutScreen> {
 
   void _skip() {
     _timer?.cancel();
-    if (_isResting) {
-      _currentIndex++;
-    } else {
-      _isResting = true;
-    }
+
+    setState(() {
+      if (_isResting) {
+        _currentIndex++;
+      }
+      _isResting = !_isResting;
+    });
+
     _startNext();
   }
 
